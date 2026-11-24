@@ -1,8 +1,5 @@
-"""Eğitim sırasında kaydedilen results.csv dosyasından kayıp ve doğruluk grafiği çizer.
-
-Kullanım:
-    python egitim_grafigi.py runs/classify/calismalar/yolov8n_cls/results.csv
-"""
+# egitimin results.csv dosyasindan kayip ve dogruluk grafigi
+# kullanim: python egitim_grafigi.py runs/classify/calismalar/yolov8n_cls/results.csv
 import csv
 import sys
 

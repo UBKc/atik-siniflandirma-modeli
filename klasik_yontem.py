@@ -1,15 +1,6 @@
-"""Karşılaştırma için derin öğrenme kullanmayan klasik yöntem: HOG + renk histogramı + SVM.
-
-Her görüntüden iki tür özellik çıkarılıyor:
-- HOG (yönlü gradyan histogramı): şekil ve kenar bilgisi
-- HSV renk histogramı: cam/plastik gibi renkle ayrışabilen sınıflar için
-
-SVM'in C ve gamma değerleri doğrulama kümesine göre seçiliyor, test kümesi
-sadece en sonda bir kez kullanılıyor.
-
-Kullanım:
-    python klasik_yontem.py
-"""
+# karsilastirma icin derin ogrenme olmadan: HOG + renk histogrami + SVM
+# HOG sekli, HSV histogrami rengi tutuyor (cam / plastik gibi siniflar icin)
+# C ve gamma dogrulama kumesine gore seciliyor, test kumesi sadece en sonda
 import json
 import time
 from pathlib import Path
@@ -25,7 +16,7 @@ from sklearn.svm import SVC
 from kutu_eslestirme import KUTU
 
 VERI = Path("veri")
-BOYUT = (128, 96)  # orijinal 512x384, oran korunarak küçültülüyor
+BOYUT = (128, 96)  # orijinal 512x384, oran ayni
 
 
 def ozellik_cikar(dosya):
@@ -57,7 +48,6 @@ def main():
     X_test, y_test = kume_yukle("test")
     print(f"Özellik boyutu: {X_train.shape[1]}, çıkarma süresi: {time.time() - t0:.1f} sn")
 
-    # Doğrulama kümesine göre basit ızgara araması
     en_iyi = None
     for C in [1, 10, 100]:
         for gamma in ["scale", 0.001, 0.0001]:

@@ -1,12 +1,6 @@
-"""YOLOv8n-cls modelini TrashNet üzerinde ince ayar (fine-tuning) ile eğitir.
-
-ImageNet üzerinde önceden eğitilmiş yolov8n-cls ağırlıkları ile başlanıyor.
-Küçük model seçildi çünkü hedef cihaz Raspberry Pi.
-
-Kullanım:
-    python egit.py            # varsayılan 30 epoch
-    python egit.py 50         # epoch sayısı
-"""
+# yolov8n-cls'i trashnet uzerinde ince ayar ile egitiyor
+# en kucuk modeli sectim cunku raspberry pi'de calisacak
+# kullanim: python egit.py 30
 import sys
 
 from ultralytics import YOLO
@@ -15,13 +9,13 @@ EPOCH = int(sys.argv[1]) if len(sys.argv) > 1 else 30
 
 
 def main():
-    model = YOLO("yolov8n-cls.pt")
+    model = YOLO("yolov8n-cls.pt")  # imagenet agirliklari
     model.train(
         data="veri",
         epochs=EPOCH,
         imgsz=224,
         batch=32,
-        patience=10,       # doğrulama başarısı 10 epoch artmazsa dur
+        patience=10,  # dogrulama 10 epoch iyilesmezse duruyor
         seed=0,
         deterministic=True,
         workers=2,

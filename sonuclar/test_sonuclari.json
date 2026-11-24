@@ -2,7 +2,7 @@
   "test_goruntu_sayisi": 379,
   "dogruluk_6_sinif": 0.8997,
   "dogruluk_5_bolme": 0.9156,
-  "ortalama_sure_ms": 8.9,
+  "ortalama_sure_ms": 9.4,
   "siniflar": {
     "cam": {
       "precision": 0.924,

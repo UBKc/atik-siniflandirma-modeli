@@ -56,7 +56,7 @@ Doğrulama doğruluğu (%94,72) testten yüksek, çünkü en iyi epoch doğrulam
 - **Karton ile kağıt:** 6 karton kağıt olarak tahmin edildi. İkisi de aynı bölmeye gittiği için kutu açısından hata değil, 5 bölmede doğruluğun yükselmesinin sebebi bu.
 - **Çöp sınıfı en zayıf:** sadece 137 görüntü var ve içinde çok farklı nesneler bulunuyor.
 
-Ortalama tahmin süresi işlemcide (2 çekirdek, Intel Xeon 2.1 GHz) görüntü başına 8,9 ms. Raspberry Pi'de daha yavaş olacak, orada henüz ölçmedim.
+Ortalama tahmin süresi işlemcide (2 çekirdek, Intel Xeon 2.1 GHz) görüntü başına yaklaşık 9 ms. Raspberry Pi'de daha yavaş olacak, orada henüz ölçmedim.
 
 Klasik yöntemde görüntü 128x96'ya küçültülüp HOG (şekil) ve HSV renk histogramı çıkarıldı, SVM'in C ve gamma değerleri doğrulama kümesine göre seçildi.
 

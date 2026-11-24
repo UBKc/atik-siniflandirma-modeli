@@ -1,18 +1,11 @@
-"""TrashNet veri setini eğitim / doğrulama / test olarak ayırır.
-
-Her sınıf kendi içinde %70 / %15 / %15 bölünüyor (stratified), böylece az örneği
-olan "çöp" sınıfı da üç kümede aynı oranda bulunuyor. Seed sabit, bölme her
-çalıştırmada aynı çıkıyor.
-
-Kullanım:
-    python veri_hazirla.py ham/dataset-resized
-"""
+# trashnet'i egitim / dogrulama / test olarak ayiriyor
+# her sinif kendi icinde %70 / %15 / %15, boylece az ornegi olan cop sinifi da her kumede ayni oranda
+# kullanim: python veri_hazirla.py ham/dataset-resized
 import random
 import shutil
 import sys
 from pathlib import Path
 
-# TrashNet klasör adlarının Türkçe karşılıkları
 SINIF_ADLARI = {
     "cardboard": "karton",
     "glass": "cam",
@@ -34,7 +27,7 @@ def main():
         shutil.rmtree(hedef)
 
     rastgele = random.Random(SEED)
-    print(f"{'sınıf':<10}{'train':>7}{'val':>6}{'test':>6}")
+    print(f"{'sinif':<10}{'train':>7}{'val':>6}{'test':>6}")
 
     for ing_ad, tr_ad in SINIF_ADLARI.items():
         dosyalar = sorted((kaynak / ing_ad).glob("*.jpg"))

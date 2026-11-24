@@ -1,14 +1,6 @@
-"""Eğitilen modeli test kümesinde değerlendirir.
-
-Test kümesi eğitimde ve model seçiminde hiç kullanılmadı. Çıktılar:
-- doğruluk, sınıf bazında precision / recall / F1
-- karışıklık matrisi (sonuclar/karisiklik_matrisi.png)
-- akıllı geri dönüşüm kutusundaki 5 bölmeye göre doğruluk
-- işlemcide tek görüntü için ortalama tahmin süresi
-
-Kullanım:
-    python degerlendir.py model/atik_yolov8n_cls.pt
-"""
+# egitilen modeli test kumesinde degerlendiriyor, test kumesi egitimde ve epoch seciminde hic kullanilmadi
+# dogruluk, sinif bazinda sonuclar, karisiklik matrisi, kutudaki 5 bolmeye gore dogruluk ve sure
+# kullanim: python degerlendir.py model/atik_yolov8n_cls.pt
 import json
 import sys
 import time
@@ -36,7 +28,7 @@ def main():
     gercek, tahmin, sureler = [], [], []
     dosyalar = sorted(TEST.glob("*/*.jpg"))
 
-    # İlk birkaç tahmin model yüklenmesi yüzünden yavaş, süreye katılmıyor
+    # ilk tahminler yavas oluyor, sureye katmiyorum
     for dosya in dosyalar[:5]:
         model(str(dosya), imgsz=224, verbose=False, device="cpu")
 
@@ -53,7 +45,7 @@ def main():
     rapor = classification_report(gercek, tahmin, labels=siniflar, digits=3, output_dict=True)
     print(classification_report(gercek, tahmin, labels=siniflar, digits=3))
 
-    # Kutudaki 5 bölmeye göre: karton ile kağıt aynı bölmeye gidiyor
+    # karton ve kagit ayni bolmeye gidiyor
     kutu_gercek = [KUTU[s] for s in gercek]
     kutu_tahmin = [KUTU[s] for s in tahmin]
     kutu_dogruluk = accuracy_score(kutu_gercek, kutu_tahmin)
@@ -62,7 +54,6 @@ def main():
     ort_sure = float(np.mean(sureler))
     print(f"Ortalama tahmin süresi (CPU, tek görüntü): {ort_sure:.1f} ms")
 
-    # Karışıklık matrisi
     cm = confusion_matrix(gercek, tahmin, labels=siniflar)
     fig, ax = plt.subplots(figsize=(6, 5))
     ax.imshow(cm, cmap="Blues")

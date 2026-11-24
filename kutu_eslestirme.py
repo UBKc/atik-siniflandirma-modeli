@@ -1,9 +1,5 @@
-"""Modelin 6 sınıfını akıllı atık ayrıştırma kutusundaki 5 bölmeye eşler.
-
-Kutuda karton için ayrı bölme yok, karton kağıt bölmesine gidiyor.
-Bölme adları akilli-atik-ayristirma reposundaki donanim.py ile aynı.
-"""
-
+# modelin 6 sinifi kutudaki 5 bolmeye gidiyor, kutuda karton bolmesi yok, kagida gidiyor
+# bolme adlari akilli-atik-ayristirma reposundaki donanim.py ile ayni
 KUTU = {
     "plastik": "PLASTIK",
     "kagit": "KAGIT",
