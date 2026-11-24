@@ -1,0 +1,14 @@
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# veri seti trashnet reposundan indiriliyor
+ham/
+veri/
+
+# egitim ciktilari
+runs/
+*.txt
+!requirements.txt
+yolov8n-cls.pt

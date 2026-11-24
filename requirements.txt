@@ -1,0 +1,6 @@
+ultralytics>=8.1
+scikit-learn
+scikit-image
+opencv-python
+matplotlib
+numpy
