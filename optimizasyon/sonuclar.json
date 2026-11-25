@@ -1,0 +1,24 @@
+{
+  "pytorch (.pt)": {
+    "dogruluk": 0.8997,
+    "boyut_mb": 2.98
+  },
+  "onnx fp32": {
+    "dogruluk": 0.8971,
+    "boyut_mb": 5.8,
+    "sure_ms_1_cekirdek": 4.33,
+    "sure_ms_tum_cekirdekler": 4.32
+  },
+  "onnx int8 dinamik": {
+    "dogruluk": 0.8232,
+    "boyut_mb": 1.52,
+    "sure_ms_1_cekirdek": 21.25,
+    "sure_ms_tum_cekirdekler": 21.02
+  },
+  "onnx int8 statik": {
+    "dogruluk": 0.8681,
+    "boyut_mb": 1.61,
+    "sure_ms_1_cekirdek": 2.85,
+    "sure_ms_tum_cekirdekler": 2.87
+  }
+}

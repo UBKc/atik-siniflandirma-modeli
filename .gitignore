@@ -12,3 +12,9 @@ runs/
 *.txt
 !requirements.txt
 yolov8n-cls.pt
+
+# onnx denemesinde sadece int8 statik model repoda
+optimizasyon/modeller/*
+!optimizasyon/modeller/atik_int8_statik.onnx
+*.onnx
+!optimizasyon/modeller/atik_int8_statik.onnx

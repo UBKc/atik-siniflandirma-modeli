@@ -1,6 +1,6 @@
 # Atık Sınıflandırma Modeli (YOLOv8n-cls)
 
-*Waste image classifier for my smart recycling bin project. YOLOv8n-cls fine-tuned on TrashNet (2,527 images, 6 classes): 89.97% accuracy on a held-out test set, 91.56% when mapped to the bin's 5 compartments, ~9 ms per image on CPU. A HOG + colour histogram + SVM baseline reaches 70.45%.*
+*Waste image classifier for my smart recycling bin project. YOLOv8n-cls fine-tuned on TrashNet (2,527 images, 6 classes): 89.97% accuracy on a held-out test set, 91.56% when mapped to the bin's 5 compartments, ~9 ms per image on CPU. A HOG + colour histogram + SVM baseline reaches 70.45%. A statically quantized INT8 ONNX version is 1.6 MB and 1.5x faster than FP32, at 86.81% accuracy.*
 
 [Akıllı Atık Ayrıştırma Kutusu](https://github.com/UBKc/akilli-atik-ayristirma) projemizde atık şu an Gemini API ile tanınıyor. İnternet bağlantısı olmadan, doğrudan Raspberry Pi üzerinde çalışabilecek bir model için bu modeli eğittim. Kendi kutumuzun fotoğraflarından veri seti henüz toplanmadığı için açık bir veri seti olan TrashNet kullandım.
 
@@ -60,6 +60,29 @@ Ortalama tahmin süresi işlemcide (2 çekirdek, Intel Xeon 2.1 GHz) görüntü 
 
 Klasik yöntemde görüntü 128x96'ya küçültülüp HOG (şekil) ve HSV renk histogramı çıkarıldı, SVM'in C ve gamma değerleri doğrulama kümesine göre seçildi.
 
+## Raspberry Pi için küçültme (ONNX ve INT8)
+
+Modeli ONNX'e çevirip 8 bitlik (INT8) sayılara indirgemeyi denedim. İki yöntem var: dinamik (sadece ağırlıklar, kalibrasyon yok) ve statik (eğitim kümesinden 100 görüntüyle kalibrasyon). Hepsi aynı 379 test görüntüsünde ölçüldü:
+
+| Model | Test doğruluğu | Boyut | Tek görüntü süresi |
+|---|---|---|---|
+| PyTorch (.pt) | %89,97 | 2,98 MB | - |
+| ONNX FP32 | %89,71 | 5,80 MB | 4,3 ms |
+| ONNX INT8 dinamik | %82,32 | 1,52 MB | 21,2 ms |
+| **ONNX INT8 statik** | **%86,81** | **1,61 MB** | **2,9 ms** |
+
+- Statik INT8 modeli FP32'ye göre 3,6 kat küçük ve 1,5 kat hızlı, doğrulukta yaklaşık 3 puan kayıp var.
+- Dinamik INT8 hem daha yavaş hem daha kötü çıktı. Bu yöntemde aktivasyonların ölçeği her çalıştırmada yeniden hesaplanıyor ve onnxruntime'ın evrişim katmanları için bu yolu yavaş. CNN'lerde statik yöntem daha uygun.
+- ONNX FP32 ile PyTorch arasındaki fark (1 görüntü) ön işlemedeki küçük farktan: ONNX denemesinde resmi kendim PIL ile küçültüyorum.
+- .pt dosyası ONNX FP32'den küçük çünkü Ultralytics ağırlıkları 16 bit kaydediyor.
+- Süreler bu bilgisayarın işlemcisinde (Intel Xeon 2.1 GHz), görüntü ön işleme hariç. Raspberry Pi'de daha uzun olacak, orada henüz ölçmedim.
+
+Statik INT8 model repoda: `optimizasyon/modeller/atik_int8_statik.onnx`. Tekrar üretmek için:
+
+```
+python optimizasyon/onnx_karsilastir.py
+```
+
 ## Dosyalar
 
 | Dosya | Ne işe yarıyor |
@@ -72,6 +95,7 @@ Klasik yöntemde görüntü 128x96'ya küçültülüp HOG (şekil) ve HSV renk h
 | `tahmin.py` | tek fotoğraf için tahmin ve kutu bölmesi |
 | `kutu_eslestirme.py` | 6 sınıfı kutudaki 5 bölmeye eşleme |
 | `model/atik_yolov8n_cls.pt` | eğitilmiş model (3 MB) |
+| `optimizasyon/` | ONNX ve INT8 karşılaştırması, INT8 model |
 | `sonuclar/` | test sonuçları (json), eğitim sonuçları (csv), grafikler |
 
 ## Çalıştırma
@@ -98,7 +122,7 @@ python klasik_yontem.py
 ## Eksikler
 
 - TrashNet fotoğrafları beyaz zeminde, iyi ışıkta ve tek nesneyle çekilmiş. Kutunun içindeki kamerada arka plan, ışık ve açı farklı olacağı için gerçek başarı daha düşük çıkabilir. Kendi kutumuzdan fotoğraf toplayıp modeli onlarla da eğitmek gerekiyor.
-- Model henüz kutunun Raspberry Pi'sinde denenmedi.
+- Model henüz kutunun Raspberry Pi'sinde denenmedi, süreleri orada ölçmek gerekiyor.
 - Çöp sınıfı için daha fazla örnek gerekiyor.
 
 ## Lisans
